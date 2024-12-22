@@ -1,12 +1,14 @@
 using NUnit.Framework;
+using NLog;
 using System;
-using hW1; 
+using hW1;
 
 namespace hW1.Tests
 {
     [TestFixture]
     public class Tests
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private WeekendChecker _weekendChecker;
 
         [SetUp]
@@ -18,28 +20,53 @@ namespace hW1.Tests
         [Test]
         public void IsWeekend_ShouldReturnTrue_ForSaturday()
         {
-            var saturday = new DateTime(2024, 12, 21); 
-            Assert.IsTrue(_weekendChecker.IsWeekend(saturday));
+            try
+            {
+                var saturday = new DateTime(2024, 12, 21);
+                Assert.IsTrue(_weekendChecker.IsWeekend(saturday));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Test failed: IsWeekend_ShouldReturnTrue_ForSaturday");
+                throw; 
+            }
         }
 
         [Test]
         public void IsWeekend_ShouldReturnTrue_ForSunday()
         {
-            var sunday = new DateTime(2024, 12, 22); 
-            Assert.IsTrue(_weekendChecker.IsWeekend(sunday));
+            try
+            {
+                var sunday = new DateTime(2024, 12, 22);
+                Assert.IsTrue(_weekendChecker.IsWeekend(sunday));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Test failed: IsWeekend_ShouldReturnTrue_ForSunday");
+                throw;
+            }
         }
 
         [Test]
         public void IsWeekend_ShouldReturnFalse_ForWeekday()
         {
-            var monday = new DateTime(2024, 12, 23); // Monday
-            Assert.IsFalse(_weekendChecker.IsWeekend(monday));
+            try
+            {
+                var monday = new DateTime(2024, 12, 23); // Monday
+                Assert.IsFalse(_weekendChecker.IsWeekend(monday));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Test failed: IsWeekend_ShouldReturnFalse_ForWeekday");
+                throw;
+            }
         }
     }
 
     [TestFixture]
     public class DateDifferenceCalculatorTests
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private DateDifferenceCalculator _calculator;
 
         [SetUp]
@@ -51,29 +78,49 @@ namespace hW1.Tests
         [Test]
         public void DaysBetweenDates_ShouldReturnCorrectDifference()
         {
-            var startDate = new DateTime(2024, 12, 20);
-            var endDate = new DateTime(2024, 12, 25);
+            try
+            {
+                // Искусственная ошибка: использование недопустимой даты
+                DateTime invalidDate = new DateTime(2024, 13, 32); 
 
-            var result = _calculator.DaysBetweenDates(startDate, endDate);
+                var startDate = new DateTime(2024, 12, 20);
+                var endDate = new DateTime(2024, 12, 25);
 
-            Assert.AreEqual(5, result);
+                var result = _calculator.DaysBetweenDates(startDate, endDate);
+
+                Assert.AreEqual(5, result);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Test failed: DaysBetweenDates_ShouldReturnCorrectDifference");
+                throw;
+            }
         }
 
         [Test]
         public void DaysBetweenDates_ShouldReturnNegative_ForReversedDates()
         {
-            var startDate = new DateTime(2024, 12, 25);
-            var endDate = new DateTime(2024, 12, 20);
+            try
+            {
+                var startDate = new DateTime(2024, 12, 25);
+                var endDate = new DateTime(2024, 12, 20);
 
-            var result = _calculator.DaysBetweenDates(startDate, endDate);
+                var result = _calculator.DaysBetweenDates(startDate, endDate);
 
-            Assert.AreEqual(-5, result);
+                Assert.AreEqual(-5, result);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Test failed: DaysBetweenDates_ShouldReturnNegative_ForReversedDates");
+                throw;
+            }
         }
     }
 
     [TestFixture]
     public class CurrentDateProviderTests
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private CurrentDateProvider _dateProvider;
 
         [SetUp]
@@ -85,10 +132,18 @@ namespace hW1.Tests
         [Test]
         public void GetCurrentDate_ShouldReturnTodaysDate()
         {
-            var currentDate = _dateProvider.GetCurrentDate().Date;
-            var expectedDate = DateTime.Now.Date;
+            try
+            {
+                var currentDate = _dateProvider.GetCurrentDate().Date;
+                var expectedDate = DateTime.Now.Date;
 
-            Assert.AreEqual(expectedDate, currentDate);
+                Assert.AreEqual(expectedDate, currentDate);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Test failed: GetCurrentDate_ShouldReturnTodaysDate");
+                throw;
+            }
         }
     }
 }
